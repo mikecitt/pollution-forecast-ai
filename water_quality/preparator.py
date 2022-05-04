@@ -6,7 +6,7 @@ import datetime as dt
 
 
 FILES_FOLDER_PATH = 'files_cambridgeshire_bedfordshire'
-CREATED_FILE_NAME = 'wholesome2'
+CREATED_FILE_NAME = 'wholesome'
 COLUMNS_TO_EXTRACT = [
     'sample.samplingPoint.label',
     'sample.sampleDateTime',
@@ -70,12 +70,13 @@ def prepare_data() -> None:
         for sample_point, sample_point_group in gk:
             by_dates = sample_point_group.groupby('sample.sampleDateTime')
             for datetime, group in by_dates:
-                new_row = { col: None for col in COLUMNS_TO_CREATE }
+                new_row = {col: None for col in COLUMNS_TO_CREATE}
                 new_row['sampling_point'] = sample_point
                 new_row['datetime'] = datetime
                 for index, row in group.iterrows():
                     if row['determinand.label'] in determinands:
-                        new_row[determinands[row['determinand.label']]] = row['result']
+                        new_row[determinands[row['determinand.label']]
+                                ] = row['result']
                 unified = unified.append(new_row, ignore_index=True)
                 print(f'\rRows added: {len(unified.index)}', end='')
             print()
